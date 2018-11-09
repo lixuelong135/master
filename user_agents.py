@@ -73,5 +73,5 @@ agents = [
     'SAMSUNG-SGH-G508E/G508EZCIG2 SHP/VPP/R5 NetFront/3.4 Qtv5.3 SMM-MMS/1.2.0 profile/MIDP-2.0 configuration/CLDC-1.1',
     'Mozilla/5.0 (iPhone; CPU iPhone OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B206 Safari/7534.48.3',
     'IUC(U;iOS 5.1.1;Zh-cn;320*480;)/UCWEB8.9.1.271/42/800',
-    'Nokia5320(19.01)/SymbianOS/9.1 Series60/3.0',
+    'Nokia5320(19.01)/SymbianOS/9.1 Series60/3.0', 
     ]
