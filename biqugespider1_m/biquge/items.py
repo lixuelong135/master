@@ -22,4 +22,5 @@ class biquItem(scrapy.Item):
     content = scrapy.Field()
     contentlink = scrapy.Field()
     masterurls = scrapy.Field()
-    pass
+    booktype = scrapy.Field()
+

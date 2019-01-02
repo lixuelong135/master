@@ -18,16 +18,16 @@ NEWSPIDER_MODULE = 'biquge.spiders'
 
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 REDIS_START_URLS_AS_SET = False
-REDIS_START_URLS_KEY = 'biqu:start_urls'
+REDIS_START_URLS_KEY = 'Master:start_urls'
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 SCHEDULER_PERSIST = True
 REDIS_START_URLS_BATCH_SIZE = 100 #从rides读取的大小
 #ITEM_PIPELINES = {
 #    'scrapy_redis.pipelines.RedisPipeline': 200
 #}
-#REDIS_HOST = "127.0.0.1"
-#REDIS_PORT = 6379
-REDIS_URL = 'reds://127.0.0.1:6379/1'
+REDIS_HOST = "127.0.0.1"
+REDIS_PORT = 6379
+REDIS_URL = 'reds://127.0.0.1:6379/2'
 
 to_day = datetime.datetime.now()
 log_file_path = 'log/biqu_{}_{}_{}.log'.format(to_day.year,to_day.month,to_day.day)
@@ -71,16 +71,17 @@ COOKIES_ENABLED = False
 #   'Accept-Language': 'en',
 #}
 DEFAULT_REQUEST_HEADERS = {
-#    'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-#    'Accept-Encoding':'gzip, deflate, sdch',
-    'Accept-Language':'zh-CN,zh;q=0.8',
-    'Cache-Control':'max-age=0',
-    'Connection':'keep-alive',
-    'Host':'www.biquge.com.tw',
-#    'If-Modified-Since':'Sat, 13 Oct 2018 01:53:09 GMT',
-#    'If-None-Match':"8070c17d9762d41:0",
-#    'Referer':'https://www.baidu.com/link?url=jT0QshaOqPH5MxV1KCcsHVqSqKlJKPPgJtjbJPorik1D5MuyrQOiUQ2OBEKLmWQJ&ck=9039.2.69.347.183.370.181.128&shh=www.baidu.com&sht=baiduhome_pg&wd=&eqid=e3d0b9c80002f8c0000000065bc1cb92',
-    'Upgrade-Insecure-Requests':'1',
+
+'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+'Accept-Encoding':'gzip, deflate',
+'Accept-Language':'zh-CN,zh;q=0.9',
+'Cache-Control':'max-age=0',
+'Connection':'keep-alive',
+#'Cookie':'__jsluid=a73781866040da60498c468e45b0efaa',
+'Host':'m.biquyun.com',
+'Referer':'https://m.biquyun.com/',
+'Upgrade-Insecure-Requests':'1',
+'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36',
     }
 
 # Enable or disable spider middlewares

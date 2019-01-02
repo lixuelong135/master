@@ -97,8 +97,8 @@ def fetch_all():
 
 def run():
     sch = Sch()
-    sch.add_job(fetch_all, 'interval', minutes=10)  # 每5分钟抓取一次
-    sch.add_job(batch_refresh, "interval", minutes=3)  # 每分钟检查一次
+    sch.add_job(fetch_all, 'interval', minutes=5)  # 每5分钟抓取一次
+    sch.add_job(batch_refresh, "interval", minutes=1)  # 每分钟检查一次
     sch.start()
     fetch_all()
 

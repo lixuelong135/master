@@ -12,7 +12,7 @@ from biquge.items import biquItem
 import re
 import random
 from biquge.user_agents import agents
-
+from biquge.proxy_pool import get_proxy 
 
 
 class UserAgentMiddleware(object):
@@ -20,8 +20,9 @@ class UserAgentMiddleware(object):
 
     def process_request(self, request, spider):
         agent = random.choice(agents)
+        proxy = get_proxy()
         request.headers["User-Agent"] = agent
-        
+        request.headers["proxy"] = proxy 
         
 class BiqugeSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,

@@ -43,7 +43,7 @@ class BiqugePipeline(object):
     #    爬虫一旦开启，就会实现这个方法，连接到数据库
     #    '''
         self.client = pymongo.MongoClient(host=self.mongo_host,port=self.mongo_port)
-        self.db = self.client[self.mongo_dbname]
+        #self.db = self.client[self.mongo_dbname]
 
     def close_spider(self, spider):
     #    '''
@@ -64,7 +64,7 @@ class BiqugePipeline(object):
         #    'bookname':item['bookname'],
         #    'content':item['content'],
         #}
-        
+        self.db = self.client[item['booktype']]
         table = self.db[item['bookname']]
         #table_url = self.db['contentlink']
         table.update({"_id":item['chaptername']},{"_id":item['chaptername'],'bookname':item['bookname'],'content':item['content']},True)

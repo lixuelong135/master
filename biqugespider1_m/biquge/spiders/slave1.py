@@ -16,8 +16,8 @@ sys.setrecursionlimit(10000)
                        
 class BiquSpider(RedisSpider):
     name = "slave1"
-    redis_key = 'biqu:start_urls'
-    allowed_domains = ["www.biquge.com.tw"]
+    redis_key = 'Master:start_urls'
+    allowed_domains = ["www.biquyun.com"]
     
 
     
@@ -28,9 +28,10 @@ class BiquSpider(RedisSpider):
         item['bookname'] = response.xpath('//meta[@name="keywords"]/@content').extract()[0].split(',')[0]
         #print(str(response.body).encode('utf-8').decode('gbk'))
         item['chaptername'] = response.xpath('//meta[@name="keywords"]/@content')[0].extract().split(',')[1]
-
-        item['content'] = response.xpath('//div[@id="nr1"]/text()').extract()[0]
-        
+        item['booktype'] = response.xpath('//meta[@name="description"]/@content').extract()[0].split('提供了')[1].split('创作的')[1].split('小说')[0]
+        #item['booktype'] = re.findall(r'/w*',item['booktype'])
+        item['content'] = response.xpath('//div[@id="novelcontent"]/p/text()').extract()[0]
+        print(item['booktype'])
         return item
         
                 

@@ -22,23 +22,30 @@ REDIS_START_URLS_AS_SET = True
 REDIS_START_URLS_KEY = 'biqu:start_urls'
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 SCHEDULER_PERSIST = True
+
+STATS_KEYS = ['downloader/request_count', 'downloader/response_count','downloader/response_status_count/200', 'item_scraped_count']
+
+HTTPERROR_ALLOWED_CODES = [301] #忽略重定向
+
 ITEM_PIPELINES = {
     #'scrapy_redis.pipelines.RedisPipeline': 200,
     'myspider.pipelines.MyspiderPipeline': 300,
     'myspider.pipelines.MMasterPipeline':255,
+    'myspider.monitor.statscol.SpiderRunStatspipeline': 301
 }
 #REDIS_HOST = "127.0.0.1"
 ##REDIS_PORT = 6379
+REDIS_DB = 1
 REDIS_URL = 'reds://127.0.0.1:6379/1'
 
 to_day = datetime.datetime.now()
 log_file_path = 'log/biqu_{}_{}_{}.log'.format(to_day.year,to_day.month,to_day.day)
-LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'DEBUG'
 #LOG_FILE = log_file_path
 LOG_STDOUT = False
 REACTOR_THREADPOOL_MAXSIZE = 50
 CONCURRENT_ITEMS = 200
-DOWNLOAD_TIMEOUT = 25
+DOWNLOAD_TIMEOUT = 30
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'myspider (+http://www.yourdomain.com)'
 
@@ -47,13 +54,14 @@ ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
-CONCURRENT_REQUESTS = 100
+CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 #DOWNLOAD_DELAY = 3
-DOWNLOAD_DELAY = 0.2
+DOWNLOAD_DELAY = 1
+RANDOMIZE_DOWNLOAD_DELAY = True
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 CONCURRENT_REQUESTS_PER_DOMAIN = 100
@@ -62,7 +70,7 @@ CONCURRENT_REQUESTS_PER_IP = 0
 
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED = False
-COOKIES_ENABLED = False
+COOKIES_ENABLED = True
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -75,13 +83,13 @@ COOKIES_ENABLED = False
 DEFAULT_REQUEST_HEADERS = {
 
 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-'Accept-Encoding':'gzip, deflate, sdch, br',
-'Accept-Language':'zh-CN,zh;q=0.8',
+'Accept-Encoding':'gzip, deflate',
+'Accept-Language':'zh-CN,zh;q=0.9',
 'Cache-Control':'max-age=0',
 'Connection':'keep-alive',
-'Cookie':'__cdnuid=713e04c47f93070d828c97e375a957f1; PHPSESSID=0u71au7irrgkhih8h29c3e1ne6',
-'Host':'m.biquge.com.tw',
-'Referer':'https://m.biquge.com.tw/',
+#'Cookie':'__jsluid=a73781866040da60498c468e45b0efaa',
+'Host':'m.biquyun.com',
+'Referer':'https://m.biquyun.com/',
 'Upgrade-Insecure-Requests':'1',
 'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36',
     }
@@ -97,7 +105,8 @@ DEFAULT_REQUEST_HEADERS = {
 DOWNLOADER_MIDDLEWARES = {
 #    'myspider.middlewares.MyCustomDownloaderMiddleware': 543,
 #    'myspider.middlewares.CheckContentLink':500,
-    'myspider.middlewares.UserAgentMiddleware':500
+    'myspider.middlewares.UserAgentMiddleware':500,
+    'myspider.monitor.statscol.StatcollectorMiddleware': 200,
 }
 
 # Enable or disable extensions

@@ -20,20 +20,20 @@ class MasterPipeline(object):
 class MMasterPipeline(object):
         
     def __init__(self):
-        self.redis_url = 'reds://127.0.0.1:6379/1'
+        self.redis_url = 'reds://127.0.0.1:6379/2'
         self.r = redis.Redis.from_url(self.redis_url,decode_responses=True)
         
     def process_item(self, item, spider):
         if isinstance(item, biquItem):
-            self.r.lpush('biqu:start_urls', item['masterurls'])
+            self.r.lpush('Master:start_urls', item['masterurls'])
             #print('完成 start_url')
-            return print('完成 start_url '+item['masterurls'])
+            return print('Master start_url '+item['masterurls'])
             
         else:
             #print('mm'+str(isinstance(item, biquItem)))
             return item
 
-
+###Master端Mongodb操作
 class MyspiderPipeline(object):
     
     def __init__(self, mongo_host, mongo_port,mongo_dbname):
@@ -50,15 +50,17 @@ class MyspiderPipeline(object):
         return cls(
             mongo_host = crawler.settings.get('MONGODB_HOST'),
             mongo_port = crawler.settings.get('MONGODB_PORT'),
-            mongo_dbname = crawler.settings.get('MONGODB_DBNAME'))
+            mongo_dbname = crawler.settings.get('MONGODB_DBNAME')
+            )
             
 
     def open_spider(self, spider):
+
     #   '''
     #    爬虫一旦开启，就会实现这个方法，连接到数据库
     #    '''
         self.client = pymongo.MongoClient(host=self.mongo_host,port=self.mongo_port)
-        self.db = self.client[self.mongo_dbname]
+        #self.db = self.client[self.mongo_dbname]
 
     def close_spider(self, spider):
     #    '''
@@ -71,7 +73,8 @@ class MyspiderPipeline(object):
     #        每个实现保存的类里面必须都要有这个方法，且名字固定，用来具体实现怎么保存
     #    '''   
         if isinstance( item, bookItem):
-            table = self.db[item['bookname']]
+            db = self.client[item['booktype'].replace('类型：','').replace('小说','')]
+            table = db[item['bookname']]
             #table_url = self.db['contentlink']
             table.update({"_id":'heards'},{"_id":'heards','bookname':item['bookname'],'author':item['author'],'booktype':item['booktype'],'updatatime':item['updatatime']},True)
             #table_url.insert({'_id':item['contentlink']})

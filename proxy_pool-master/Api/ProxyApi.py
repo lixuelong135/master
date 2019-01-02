@@ -1,17 +1,5 @@
 # -*- coding: utf-8 -*-
-# !/usr/bin/env python
-"""
--------------------------------------------------
-   File Name：     ProxyApi.py
-   Description :
-   Author :       JHao
-   date：          2016/12/4
--------------------------------------------------
-   Change Activity:
-                   2016/12/4:
--------------------------------------------------
-"""
-__author__ = 'JHao'
+
 
 import sys
 from werkzeug.wrappers import Response

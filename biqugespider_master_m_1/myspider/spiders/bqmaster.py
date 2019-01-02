@@ -18,7 +18,7 @@ sys.setrecursionlimit(100000)
 class BiquSpider(CrawlSpider):
     name = "bqmaster"
     redis_key = 'biqu:start_urls'
-    allowed_domains = ['m.biquge.com.tw']
+    allowed_domains = ['m.biquyun.com']
 #    custom_settings = {
 #        'ITEM_PIPELINES':{
 #            'myspider.pipelines.MyspiderPipeline': 300,
@@ -26,25 +26,27 @@ class BiquSpider(CrawlSpider):
 #        }
 #    }
     start_urls = [
-                'http://m.biquge.com.tw/wapsort/1_1.html',
-                'http://m.biquge.com.tw/wapsort/2_1.html',
-                'http://m.biquge.com.tw/wapsort/3_1.html',
-                'http://m.biquge.com.tw/wapsort/4_1.html',
-                'http://m.biquge.com.tw/wapsort/5_1.html',
-                'http://m.biquge.com.tw/wapsort/6_1.html',
-                'http://m.biquge.com.tw/wapsort/7_1.html',
-                'http://m.biquge.com.tw/wapsort/8_1.html',
-                'http://m.biquge.com.tw/wapfull/1.html',
+                'http://m.biquyun.com/wapsort/1_1.html',     #玄幻
+                'http://m.biquyun.com/wapsort/2_1.html',     #修真
+                'http://m.biquyun.com/wapsort/3_1.html',     #都市
+                'http://m.biquyun.com/wapsort/4_1.html',     #历史
+                'http://m.biquyun.com/wapsort/5_1.html',     #网游
+                'http://m.biquyun.com/wapsort/6_1.html',     #科幻
+                'http://m.biquyun.com/wapsort/7_1.html',     #恐怖
+                'http://m.biquyun.com/wapsort/8_1.html',     #其他
+                'http://m.biquyun.com/wapfull/1.html',       #完本
                 ]
 
         
     
     rules = (
+       Rule(LinkExtractor(allow=(r'\/wapfull\/\d*.html$'),),follow=True),
+       Rule(LinkExtractor(allow=(r'\/wapsort\/\d*.html$'),),follow=True),
        Rule(LinkExtractor(allow=(r'\/wapsort\/\d*_\d*.html$'),),follow=True),
-       #Rule(LinkExtractor(allow=(r'\/wapbook\/\d*.html$'),restrict_xpaths=('//a')),callback='bookheards',follow=True),
-       Rule(LinkExtractor(allow=(r'\/wapbook\/\d*.html$'),restrict_xpaths=('//a')),follow=True),
+       Rule(LinkExtractor(allow=(r'\/wapbook\/\d*.html$'),restrict_xpaths=('//a')),callback='bookheards',follow=True),
+       #Rule(LinkExtractor(allow=(r'\/wapbook\/\d*.html$'),restrict_xpaths=('//a')),follow=True),
        #Rule(LinkExtractor(allow=(r'\/\d*.html$'),restrict_xpaths=('//div[@class=page]')),follow=True),
-       Rule(LinkExtractor(allow=(r'\/\d*_\d*_\d*\/$'),),callback = 'chapter',follow=True),
+       Rule(LinkExtractor(allow=(r'\/\d*_\d*_\d*\/$'),),callback = 'chapter',follow=True),  #章节页面
        #Rule(LinkExtractor(allow=(r'\/\d*_\d*_\d*\/$'),),follow = True),
         )
     def bookheards(self,response):
@@ -59,7 +61,7 @@ class BiquSpider(CrawlSpider):
 
         for urls in response.xpath('//ul[@class="chapters"]/li/a/@href').extract():
             #print(response.body)
-            url_a = 'https://m.biquge.com.tw' +urls
+            url_a = 'http://m.biquyun.com' +urls
             #print(url_a)
             item = biquItem()
             item['masterurls'] = url_a
